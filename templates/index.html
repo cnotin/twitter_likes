@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+
+    <title>Twitter Likes | Home</title>
+
+    <link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/mdb.min.css" rel="stylesheet">
+
+    <style>
+        html {
+            background-color: rgb(21, 32, 43);
+        }
+
+        body {
+            max-width: 840px;
+            /* center! */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+            overflow: scroll;
+            text-overflow: ellipsis;
+        }
+
+        img.media {
+            border: 1px solid black;
+            max-width: 100%;
+            max-height: 800px;
+            margin: auto; /* center */
+        }
+
+        a.date {
+            font-style: italic;
+            font-size: small;
+        }
+    </style>
+</head>
+<body>
+{% for like in likes %}
+    <img src="{{ like['profile_image_url_https'] }}" />
+    <a href="https://twitter.com/{{ like['screen_name'] }}">@{{ like['screen_name'] }}</a> - {{ like['name'] }}
+
+    <br />
+    <a href="https://twitter.com/{{ like['screen_name'] }}/status/{{ like['id'] }}" class="date">{{ like['created_at'] }}</a>
+
+    <br />
+    {{ like['text'] }}
+
+    {% for media in like['medias'] %}
+        <br /><img src="{{ media }}" class="media" />
+    {% endfor %}
+    <hr />
+{% endfor %}
+</body>
+</html>

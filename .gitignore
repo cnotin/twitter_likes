@@ -1,0 +1,6 @@
+/.idea
+/data/*_output.json
+/__pycache__
+/html_output*
+/secrets.py
+/data/likes_*.json
