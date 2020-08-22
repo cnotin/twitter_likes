@@ -31,18 +31,20 @@ def save_likes(likes):
         json.dump(likes, f, indent=2)
 
 
-def get_new_likes(since):
+def get_new_likes(old_likes_ids):
     """
-    get all favorites from Twitter API, since the last one we already know
+    get all favorites from Twitter API
     """
     # first pass over the obtained statuses
     liked_statuses = []
     for status in tweepy.Cursor(api.favorites,
                                 TARGET_USER,
                                 count=200,
-                                tweet_mode="extended",  # get content in new 280 chars limitation
-                                since_id=since
+                                tweet_mode="extended"  # get content in new 280 chars limitation
                                 ).items():
+        # skip the ones we already know
+        if status.id in old_likes_ids:
+            continue
         liked_statuses.append(status)
 
         # is it a quote-RT?
@@ -98,14 +100,13 @@ def main():
     # or unliked!
     try:
         old_likes = get_old_likes()
-        since = old_likes[0]['id']  # id of the most recent liked tweet in the cache
     except:
         # surely means it's the first run, we don't have the cache built yet
         old_likes = []
-        since = 1
 
-    # get from API new likes since the last one we already have in cache
-    new_likes = get_new_likes(since)
+    # get all new likes from API
+    old_likes_ids = [tweet["id"] for tweet in old_likes] # API returns all so we skip already known
+    new_likes = get_new_likes(old_likes_ids)
 
     # prepend new liked tweets to the cache content
     all_likes = new_likes + old_likes
