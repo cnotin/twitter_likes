@@ -14,3 +14,4 @@ Even if the original tweet was deleted or the author's profile was switched to p
 * The output page is not paginated, so everything is on one page. It's easier to search within, but it could be too much with too many likes since that's a lot of content and images are all loaded at opening.
 * The GIF or videos embedded in original content are displayed as static images as it allows to save bandwidth when loading the page. Also the interesting content is more often in the text than in the image, and we can always open the original tweet.
 * The media content is not downloaded and backed up so we can lose access to it, but I don't care as the text is usually what matters most.
+* Twitter bookmarks aren't supported because, as far as I know, there is no official public API to fetch those...
