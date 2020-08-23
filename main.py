@@ -3,6 +3,7 @@
 
 import json
 import logging
+import os
 import sys
 from datetime import datetime
 
@@ -19,14 +20,16 @@ api = None
 def get_old_likes():
     with open(f"data/likes_{TARGET_USER}.json", "r", encoding="utf-8") as f:
         try:
-            likes = json.loads(f.read())
+            return json.loads(f.read())
         except Exception as e:
             print("Error: " + str(e))
-            likes = {}
-    return likes
+            return []
 
 
 def save_likes(likes):
+    if not os.path.isdir("data"):
+        os.mkdir("data")
+
     with open(f"data/likes_{TARGET_USER}.json", "w", encoding="utf-8") as f:
         json.dump(likes, f, indent=2)
 
@@ -105,7 +108,7 @@ def main():
         old_likes = []
 
     # get all new likes from API
-    old_likes_ids = [tweet["id"] for tweet in old_likes] # API returns all so we skip already known
+    old_likes_ids = [tweet["id"] for tweet in old_likes]  # API returns all so we skip already known
     new_likes = get_new_likes(old_likes_ids)
 
     # prepend new liked tweets to the cache content
