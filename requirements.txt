@@ -1,2 +1,2 @@
-tweepy
+tweepy>=3.7.0
 jinja2
